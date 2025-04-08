@@ -45,4 +45,14 @@ $ npm run start:prod
 8. 注入key 并声明类型为 ClientProxy，使用send方法来指定接口名sum，和传入参数
 ### 结束
 9. 在 lib 中存放多个微服务需要使用的公共代码，如 redis 的配置及其公共方法
-10. 
+10. 安装ORM prisma 更改配置文件 .env 和 表结构 schema.prisma 以及 datasource 
+  ```cmd
+    npm install prisma --save-dev
+    // 执行 prisma init 创建 schema 文件
+    npx prisma init
+    // 重置下数据库
+    npx prisma migrate reset 
+    // 创建新的 migration
+    npx prisma migrate dev --name user
+  ```
+11. 

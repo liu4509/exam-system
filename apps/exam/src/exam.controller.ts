@@ -12,7 +12,7 @@ export class ExamController {
   @Get()
   async getHello() {
     const keys = await this.redisService.keys('*');
-    return this.examService.getHello() + keys;
+    return this.examService.getHello() + keys.toString();
   }
 
   @MessagePattern('sum')

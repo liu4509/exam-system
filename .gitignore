@@ -3,6 +3,10 @@
 /node_modules
 /build
 
+# Prisma 生成的客户端代码（自动生成，无需提交）
+/prisma/client/
+/generated/
+
 # Logs
 logs
 *.log

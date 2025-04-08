@@ -11,7 +11,7 @@ import { createClient } from 'redis';
         const client = createClient({
           socket: {
             host: '112.124.54.197',
-            port: 37690,
+            port: 6379,
           },
           password: 'wlwwlw',
           database: 1,

@@ -12,6 +12,6 @@ export class UserController {
   @Get()
   async getHello() {
     const keys = await this.redisService.keys('*');
-    return this.userService.getHello() + keys;
+    return this.userService.getHello() + keys.toString();
   }
 }
