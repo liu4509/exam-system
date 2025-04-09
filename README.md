@@ -55,4 +55,10 @@ $ npm run start:prod
     // 创建新的 migration
     npx prisma migrate dev --name user
   ```
-11. 
+11. lib 中创建 prisma datasource 来配置数据库 并放回方法 操控数据 
+12. 在中使用了 生命周期钩子方法 模块初始化完成后 异步调用数据库连接方法 并配置log 将sql 语句打印在控制台
+13. 引用 @nestjs/mapped-types 来处理创建 DTO 类频繁重复的问题
+14. 加一下 ValidationPipe，来对请求体做校验
+  ```cmd
+    npm install --save class-validator class-transformer
+  ```
