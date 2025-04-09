@@ -62,3 +62,9 @@ $ npm run start:prod
   ```cmd
     npm install --save class-validator class-transformer
   ```
+15. 完成了用户注册
+16. 封装个 email 的 lib 配置邮件地址 sendMail 发送邮件
+  ```cmd
+    npm install nodemailer --save
+  ```
+17. 完成 验证码发送 和 注册判断
