@@ -8,17 +8,17 @@ export class EmailService {
   constructor() {
     this.transporter = createTransport({
       host: 'smtp.163.com',
-      port: '465',
+      port: 465,
       auth: {
         user: '17585114509@163.com',
-        pass: 'DYmYTdxX29mPdJRg',
+        pass: 'NNfvFLA7aL4hbfUy',
       },
     });
   }
 
   async sendMail({ to, subject, html }) {
     await this.transporter.sendMail({
-      form: {
+      from: {
         name: '考试系统',
         address: '17585114509@163.com',
       },

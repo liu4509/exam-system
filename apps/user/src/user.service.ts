@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { md5 } from './utils';
 import { RedisService } from '@app/redis';
-import { RegisterUserDto } from './user.dto';
+import { RegisterUserDto, LoginUserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -59,5 +59,25 @@ export class UserService {
       this.logger.error(error, UserService);
       return null;
     }
+  }
+
+  async findOne(loginUserDto: LoginUserDto) {
+    // 1. 查询用户
+    const foundUser = await this.prisma.user.findUnique({
+      where: {
+        username: loginUserDto.username,
+      },
+    });
+
+    if (!foundUser) {
+      throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST);
+    }
+    // 2. 判断密码
+    const { password, ...user } = foundUser;
+    if (md5(loginUserDto.password) !== password) {
+      throw new HttpException('用户账号或密码不正确', HttpStatus.BAD_REQUEST);
+    }
+
+    return user;
   }
 }

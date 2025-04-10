@@ -1,5 +1,6 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { register } from 'module';
 
 export class RegisterUserDto {
   @IsNotEmpty({
@@ -14,7 +15,7 @@ export class RegisterUserDto {
   password: string;
 
   @IsNotEmpty({
-    message: '密码不能为空',
+    message: '邮箱不能为空',
   })
   @IsEmail({}, { message: '不是合法邮箱' })
   email: string;
@@ -25,6 +26,7 @@ export class RegisterUserDto {
   captcha: string;
 }
 
-export class CreateUserDto extends OmitType(RegisterUserDto, [
+export class LoginUserDto extends OmitType(RegisterUserDto, [
   'captcha',
+  'email',
 ] as const) {}

@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RegisterUserDto } from './user.dto';
+import { LoginUserDto, RegisterUserDto } from './user.dto';
 import { EmailService } from '@app/email';
 import { RedisService } from '@app/redis';
 
@@ -28,6 +28,11 @@ export class UserController {
   @Post('register')
   async register(@Body() register: RegisterUserDto) {
     return await this.userService.create(register);
+  }
+
+  @Post('login')
+  async userLogin(@Body() loginUserDto: LoginUserDto) {
+    return await this.userService.findOne(loginUserDto);
   }
 
   @Get('register-captcha')
@@ -62,6 +67,7 @@ export class UserController {
       this.logger.error(error, UserController.name);
       throw new HttpException('验证码发送失败', HttpStatus.BAD_REQUEST);
     }
+
     console.log(address + '-验证码-' + code);
     await this.redisService.set(`captcha_${address}`, code, ttl);
     return '发送成功';

@@ -66,5 +66,6 @@ $ npm run start:prod
 16. 封装个 email 的 lib 配置邮件地址 sendMail 发送邮件
   ```cmd
     npm install nodemailer --save
+    npm i --save-dev @types/nodemailer
   ```
 17. 完成 验证码发送 和 注册判断
