@@ -8,12 +8,14 @@ import {
   Logger,
   Post,
   Query,
+  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginUserDto, RegisterUserDto } from './user.dto';
 import { EmailService } from '@app/email';
 import { RedisService } from '@app/redis';
 import { JwtService } from '@nestjs/jwt';
+import { RequireLogin, UserInfo } from '@app/common';
 
 @Controller()
 export class UserController {
@@ -44,7 +46,7 @@ export class UserController {
           userId: user.id,
           username: user.username,
         },
-        { expiresIn: '7d' }, // token 过期时间是 7 天。
+        { expiresIn: '7d' }, // Token 过期时间是 7 天。
       ),
     };
   }
@@ -85,5 +87,15 @@ export class UserController {
     console.log(address + '-验证码-' + code);
     await this.redisService.set(`captcha_${address}`, code, ttl);
     return '发送成功';
+  }
+
+  @Get('aaa')
+  @RequireLogin()
+  aaa(@UserInfo() userInfo, @UserInfo('username') username) {
+    // return 'aaa';
+    return {
+      username,
+      userInfo,
+    };
   }
 }

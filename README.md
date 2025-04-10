@@ -97,3 +97,8 @@ npm install @nestjs/microservices --save
   // 生成 Guard
   nest g guard auth --flat --no-spec
 ```
+
+20. 动态读取装饰器配置，实现灵活的权限控制，与 SetMetadata 和自定义装饰器配合使用
+21. 全局启用这个 Guard，在 UserModule 里添加这个 provider
+22. 把这个 @SetMetadata 封装成自定义装饰器，实现另一个自定义参数装饰器基于需要登录效验来取 request.user
+23. 在访问接口之后，在 header 里额外返回新 token 实现自动续期

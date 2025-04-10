@@ -57,7 +57,7 @@ export class UserService {
         },
       });
     } catch (error) {
-      this.logger.error(error, UserService);
+      this.logger.error(error, UserService.name);
       return null;
     }
   }
