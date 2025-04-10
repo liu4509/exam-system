@@ -14,6 +14,10 @@ export class RedisService {
     return await this.redisClient.get(key);
   }
 
+  async del(key: string) {
+    return await this.redisClient.del(key);
+  }
+
   async set(key: string, value: string | number, ttl?: number) {
     await this.redisClient.set(key, value);
 

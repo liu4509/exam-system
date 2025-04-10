@@ -29,6 +29,7 @@ export class UserService {
     if (user.captcha !== captcha) {
       throw new HttpException('验证码不正确', HttpStatus.BAD_REQUEST);
     }
+    await this.redisService.del(`captcha_${user.email}`); // 使用后就清除 防止
 
     // 2. 判断用户是否存在
     const foundUser = await this.prisma.user.findUnique({

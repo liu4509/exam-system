@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { LoginUserDto, RegisterUserDto } from './user.dto';
 import { EmailService } from '@app/email';
 import { RedisService } from '@app/redis';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class UserController {
@@ -25,6 +26,9 @@ export class UserController {
   @Inject(RedisService)
   redisService: RedisService;
 
+  @Inject(JwtService)
+  jwtService: JwtService;
+
   @Post('register')
   async register(@Body() register: RegisterUserDto) {
     return await this.userService.create(register);
@@ -32,7 +36,17 @@ export class UserController {
 
   @Post('login')
   async userLogin(@Body() loginUserDto: LoginUserDto) {
-    return await this.userService.findOne(loginUserDto);
+    const user = await this.userService.findOne(loginUserDto);
+    return {
+      user,
+      token: this.jwtService.sign(
+        {
+          userId: user.id,
+          username: user.username,
+        },
+        { expiresIn: '7d' }, // token 过期时间是 7 天。
+      ),
+    };
   }
 
   @Get('register-captcha')
