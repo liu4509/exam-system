@@ -103,3 +103,18 @@ npm install @nestjs/microservices --save
 22. 把这个 @SetMetadata 封装成自定义装饰器，实现另一个自定义参数装饰器基于需要登录效验来取 request.user
 23. 在访问接口之后，在 header 里额外返回新 token 实现自动续期
 24. 将邮箱发送封装，与用户注册一样来实现更新密码接口
+
+### 考试模块
+
+25. 添加 npm scripts 简化 prisms 的命令
+26. 创建考试表 schena 增加Exam 表 并迁移数据表
+
+```cmd
+  npm run db:dev:name exam
+  // 执行结果: prisma migrate dev --name exam
+```
+
+27. 实现 exam 创建考试
+28. 将 redis 的配置 抽离到 common 中注册 其他模块引入使用
+29. 创建考试需要关联用户，所以需要登录，拿到用户信息在module中加全局的 AuthGuard
+30. 在创建时需要关联 userId
