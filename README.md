@@ -102,3 +102,4 @@ npm install @nestjs/microservices --save
 21. 全局启用这个 Guard，在 UserModule 里添加这个 provider
 22. 把这个 @SetMetadata 封装成自定义装饰器，实现另一个自定义参数装饰器基于需要登录效验来取 request.user
 23. 在访问接口之后，在 header 里额外返回新 token 实现自动续期
+24. 将邮箱发送封装，与用户注册一样来实现更新密码接口
