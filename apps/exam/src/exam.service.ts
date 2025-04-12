@@ -20,7 +20,7 @@ export class ExamService {
       return await this.prisma.exam.create({
         data: {
           name: dto.name,
-          content: dto.content ? dto.content : '',
+          content: dto.content ? dto.content : '[]',
           createUser: {
             connect: {
               id: userId, // 关联userId
@@ -72,13 +72,14 @@ export class ExamService {
       throw new HttpException('删除失败', HttpStatus.BAD_REQUEST);
     }
   }
-
+  // 保存考试内容
   async save(dto: ExamSaveDto, userId: number) {
     try {
       return await this.prisma.exam.update({
         where: {
           id: dto.id,
           createUserId: userId,
+          isDelete: false,
         },
         data: {
           content: dto.content,
@@ -87,6 +88,24 @@ export class ExamService {
     } catch (error) {
       this.logger.error(error, ExamService.name);
       throw new HttpException('保存失败', HttpStatus.BAD_REQUEST);
+    }
+  }
+  // 发布
+  async publish(userId: number, id: number) {
+    try {
+      return await this.prisma.exam.update({
+        where: {
+          id,
+          createUserId: userId,
+          isDelete: false,
+        },
+        data: {
+          isPublish: true,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error, ExamService.name);
+      throw new HttpException('发布失败', HttpStatus.BAD_REQUEST);
     }
   }
 }

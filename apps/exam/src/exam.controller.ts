@@ -3,22 +3,18 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Post,
   Query,
 } from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { RedisService } from '@app/redis';
 import { RequireLogin, UserInfo } from '@app/common';
 import { ExamAddDto, ExamSaveDto } from './exam.dto';
 
 @Controller()
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
-  @Inject(RedisService)
-  private redisService: RedisService;
 
   @Post('add')
   @RequireLogin()
@@ -34,14 +30,20 @@ export class ExamController {
 
   @Delete('delete/:id')
   @RequireLogin()
-  del(@Param('id') id: string, @UserInfo('userId') userId: number) {
-    return this.examService.delete(userId, +id);
+  async del(@Param('id') id: string, @UserInfo('userId') userId: number) {
+    return await this.examService.delete(userId, +id);
   }
 
   @Post('save')
   @RequireLogin()
-  save(@Body() dto: ExamSaveDto, @UserInfo('userId') userId: number) {
-    return this.examService.save(dto, userId);
+  async save(@Body() dto: ExamSaveDto, @UserInfo('userId') userId: number) {
+    return await this.examService.save(dto, userId);
+  }
+
+  @Post('publish/:id')
+  @RequireLogin()
+  async publish(@UserInfo('userId') userId: number, @Param('id') id: string) {
+    return await this.examService.publish(userId, +id);
   }
 
   @MessagePattern('sum')
