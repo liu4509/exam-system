@@ -118,3 +118,4 @@ npm install @nestjs/microservices --save
 28. 将 redis 的配置 抽离到 common 中注册 其他模块引入使用
 29. 创建考试需要关联用户，所以需要登录，拿到用户信息在module中加全局的 AuthGuard
 30. 在创建时需要关联 userId
+31.

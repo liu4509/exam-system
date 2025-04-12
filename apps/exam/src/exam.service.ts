@@ -33,4 +33,12 @@ export class ExamService {
       throw new HttpException('添加失败', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async list(userId: number) {
+    return await this.prisma.exam.findMany({
+      where: {
+        createUserId: userId,
+      },
+    });
+  }
 }

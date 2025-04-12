@@ -17,6 +17,12 @@ export class ExamController {
     return await this.examService.add(userId, dto);
   }
 
+  @Get('list')
+  @RequireLogin()
+  async list(@UserInfo('userId') userId: number) {
+    return await this.examService.list(userId);
+  }
+
   @MessagePattern('sum')
   sum(numArr: Array<number>): number {
     return numArr.reduce((total, item) => total + item, 0);
