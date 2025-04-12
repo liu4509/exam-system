@@ -12,7 +12,7 @@ import { ExamService } from './exam.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { RedisService } from '@app/redis';
 import { RequireLogin, UserInfo } from '@app/common';
-import { ExamAddDto } from './exam.dto';
+import { ExamAddDto, ExamSaveDto } from './exam.dto';
 
 @Controller()
 export class ExamController {
@@ -36,6 +36,12 @@ export class ExamController {
   @RequireLogin()
   del(@Param('id') id: string, @UserInfo('userId') userId: number) {
     return this.examService.delete(userId, +id);
+  }
+
+  @Post('save')
+  @RequireLogin()
+  save(@Body() dto: ExamSaveDto, @UserInfo('userId') userId: number) {
+    return this.examService.save(dto, userId);
   }
 
   @MessagePattern('sum')

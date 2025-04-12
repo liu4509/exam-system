@@ -5,7 +5,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { ExamAddDto } from './exam.dto';
+import { ExamAddDto, ExamSaveDto } from './exam.dto';
 import { PrismaService } from '@app/prisma';
 
 @Injectable()
@@ -35,31 +35,58 @@ export class ExamService {
   }
 
   async list(userId: number, bin: string) {
-    return await this.prisma.exam.findMany({
-      // 有bin查询回收站 反之返回正常的列表
-      where:
-        bin !== undefined
-          ? {
-              createUserId: userId,
-              isDelete: true,
-            }
-          : {
-              createUserId: userId,
-              isDelete: false,
-            },
-    });
+    try {
+      return await this.prisma.exam.findMany({
+        // 有bin查询回收站 反之返回正常的列表
+        where:
+          bin !== undefined
+            ? {
+                createUserId: userId,
+                isDelete: true,
+              }
+            : {
+                createUserId: userId,
+                isDelete: false,
+              },
+      });
+    } catch (error) {
+      this.logger.error(error, ExamService.name);
+      throw new HttpException('列表查询失败', HttpStatus.BAD_REQUEST);
+    }
   }
 
   // 软删除
   async delete(userid: number, id: number) {
-    return await this.prisma.exam.update({
-      where: {
-        id,
-        createUserId: userid,
-      },
-      data: {
-        isDelete: true,
-      },
-    });
+    try {
+      return await this.prisma.exam.update({
+        where: {
+          id,
+          createUserId: userid,
+        },
+        data: {
+          isDelete: true,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error, ExamService.name);
+      throw new HttpException('删除失败', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async save(dto: ExamSaveDto, userId: number) {
+    try {
+      return await this.prisma.exam.update({
+        where: {
+          id: dto.id,
+          createUserId: userId,
+        },
+        data: {
+          content: dto.content,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error, ExamService.name);
+      throw new HttpException('保存失败', HttpStatus.BAD_REQUEST);
+    }
   }
 }
