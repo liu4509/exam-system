@@ -34,10 +34,31 @@ export class ExamService {
     }
   }
 
-  async list(userId: number) {
+  async list(userId: number, bin: string) {
     return await this.prisma.exam.findMany({
+      // 有bin查询回收站 反之返回正常的列表
+      where:
+        bin !== undefined
+          ? {
+              createUserId: userId,
+              isDelete: true,
+            }
+          : {
+              createUserId: userId,
+              isDelete: false,
+            },
+    });
+  }
+
+  // 软删除
+  async delete(userid: number, id: number) {
+    return await this.prisma.exam.update({
       where: {
-        createUserId: userId,
+        id,
+        createUserId: userid,
+      },
+      data: {
+        isDelete: true,
       },
     });
   }

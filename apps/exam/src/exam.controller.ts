@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { RedisService } from '@app/redis';
@@ -11,7 +20,7 @@ export class ExamController {
   @Inject(RedisService)
   private redisService: RedisService;
 
-  @Get('add')
+  @Post('add')
   @RequireLogin()
   async add(@UserInfo('userId') userId: number, @Body() dto: ExamAddDto) {
     return await this.examService.add(userId, dto);
@@ -19,8 +28,14 @@ export class ExamController {
 
   @Get('list')
   @RequireLogin()
-  async list(@UserInfo('userId') userId: number) {
-    return await this.examService.list(userId);
+  async list(@UserInfo('userId') userId: number, @Query('bin') bin: string) {
+    return await this.examService.list(userId, bin);
+  }
+
+  @Delete('delete/:id')
+  @RequireLogin()
+  del(@Param('id') id: string, @UserInfo('userId') userId: number) {
+    return this.examService.delete(userId, +id);
   }
 
   @MessagePattern('sum')
